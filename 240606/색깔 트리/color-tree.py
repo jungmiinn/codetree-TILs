@@ -86,7 +86,7 @@
 #         # print("node 현황:", node)
 #         print(cal_score())
 
-n = int(input())  # 명령횟수
+n = int(input())  # 명령 횟수
 node = {}
 child_map = {}
 
@@ -122,28 +122,31 @@ def find_color(mid):  # 300
     return None
 
 def cal_score():  # 400
-    score = 0
-
     def dfs(mid):
-        stack = [(mid, [node[mid][2]])]
-        visited = set()
+        stack = [mid]
+        colors = set()
         while stack:
-            curr, colors = stack.pop()
-            if curr not in visited:
-                visited.add(curr)
+            curr = stack.pop()
+            if curr in node:
+                colors.add(node[curr][2])
                 if curr in child_map:
-                    for child in child_map[curr]:
-                        stack.append((child, colors + [node[child][2]]))
-                else:
-                    unique_colors = len(set(colors))
-                    nonlocal score
-                    score += unique_colors ** 2
+                    stack.extend(child_map[curr])
+        return colors
 
-    roots = set(mid for mid, val in node.items() if val[1] == -1)
-    for root in roots:
-        dfs(root)
-
-    return score
+    total_score = 0
+    visited = set()
+    for mid in node:
+        if mid not in visited:
+            colors = dfs(mid)
+            total_score += len(colors) ** 2
+            stack = [mid]
+            while stack:
+                curr = stack.pop()
+                if curr not in visited:
+                    visited.add(curr)
+                    if curr in child_map:
+                        stack.extend(child_map[curr])
+    return total_score
 
 for i in range(n):
     temp = list(map(int, input().split(" ")))
