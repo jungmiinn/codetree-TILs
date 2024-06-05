@@ -9,9 +9,10 @@ def moving_inside(i, res):
     checking = [[x-1, y], [x, y+1], [x+1, y], [x, y-1]]
     for x in checking:
         a, b = x[0], x[1]
-        if forest[a][b] > 0  and forest[a][b] != i:
-            res.append(forest[a][b])
-            moving_inside(forest[a][b], res)
+        if a >= 0 and a < ip[0] and b >= 0 and b < ip[1]:
+            if forest[a][b] > 0  and forest[a][b] != i:
+                res.append(forest[a][b])
+                moving_inside(forest[a][b], res)
     return res
 
 
