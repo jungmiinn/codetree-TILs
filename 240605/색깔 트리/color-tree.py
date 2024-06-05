@@ -19,14 +19,21 @@ def node_add(mid, pid, color, max_d): #100
 
 
 def change_color(mid, color): #200
-    # print("색깔변경")
+    # print("색깔변경", mid, color)
     id = mid
+    v = []
+
     for x in node:
         if x[0] == mid: # 루트노드 찾기
             x[2] = color
         if x[1] == id: # 자식노드 찾기
-            id = x[0]
+            # print("자식 찾음", x[0])
+            v.append(x[0])
             x[2] = color
+    
+    while(len(v) > 0):
+        id = v.pop()
+        change_color(id, color)
     # return 0
 
 
