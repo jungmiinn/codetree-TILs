@@ -35,62 +35,63 @@ def build_adjacency_list(edges):
     # 엣지를 추가합니다.
     for u, v, w in edges:
         adjacency_list[u].append((v, w))
+        adjacency_list[v].append((u, w))
     
     return adjacency_list
 
-
-def dijkstra(graph, start, end):
-    # 그래프는 인접 리스트 형태로 주어집니다.
-    # 예: graph = { 'A': [('B', 1), ('C', 4)], 'B': [('A', 1), ('C', 2), ('D', 5)], ... }
+def dijkstra(graph, start, target):
+    # 노드 개수
+    n = len(graph)
     
-    # 초기화
-    queue = []
-    heapq.heappush(queue, (0, start))
-    distances = {node: float('inf') for node in graph}
+    # 최단 거리 테이블 무한으로 초기화
+    distances = [float('inf')] * n
     distances[start] = 0
-    previous_nodes = {node: None for node in graph}
 
-    while queue:
-        current_distance, current_node = heapq.heappop(queue)
-
+    # 우선순위 큐
+    priority_queue = [(0, start)]
+    
+    while priority_queue:
+        current_distance, current_node = heapq.heappop(priority_queue)
+        
+        # 현재 노드가 목적지 노드이면 종료
+        if current_node == target:
+            return distances[current_node]
+        
+        # 현재 노드가 처리된 적이 있다면 무시
         if current_distance > distances[current_node]:
             continue
-
+        
+        # 인접한 노드들에 대해 거리 계산
         for neighbor, weight in graph[current_node]:
             distance = current_distance + weight
-
+            
+            # 더 짧은 경로를 발견한 경우
             if distance < distances[neighbor]:
                 distances[neighbor] = distance
-                previous_nodes[neighbor] = current_node
-                heapq.heappush(queue, (distance, neighbor))
-
-    # 최단 경로 복원
-    path, current_node = [], end
-    while previous_nodes[current_node] is not None:
-        path.append(current_node)
-        current_node = previous_nodes[current_node]
-    if path:
-        path.append(start)
-    path.reverse()
-
-    return path, distances[end]
+                heapq.heappush(priority_queue, (distance, neighbor))
+                
+                # 자기 자신으로 가는 간선인 경우 별도로 업데이트
+                if neighbor == current_node and distance < distances[current_node]:
+                    distances[current_node] = distance
+    
+    # 목적지까지의 경로가 없는 경우
+    return distances[target]
 
 
-def calculate():
+def calculate(graph):
     sales = [] #얘를 힙으로
-    graph = build_adjacency_list(cities)
-
+    
     for key in packages:
         pid = packages[key][0]
         rev = packages[key][1]
         d = packages[key][2]
-        path, cost = dijkstra(graph, now_s, d)
+        cost = dijkstra(graph, now_s, d)
         if cost == float('inf'):
             heapq.heappush(sales, [101, pid])
         else:
             heapq.heappush(sales, [-(rev-cost), pid])
-        # print("path, cost:", path, cost)
-    # print(sales)
+    if len(sales) == 0:
+        return 101, -1
     return heapq.heappop(sales)
 
 
@@ -111,7 +112,9 @@ for i in range(n):
     elif temp[0] == 300:
         delete(temp[1])
     elif temp[0] == 400:
-        benefit, pid = calculate()
+        graph = build_adjacency_list(cities)
+        # print(graph)
+        benefit, pid = calculate(graph)
         if benefit > 0:
             print(-1)
         else:
