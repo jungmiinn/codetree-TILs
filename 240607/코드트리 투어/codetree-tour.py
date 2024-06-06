@@ -33,19 +33,18 @@ def build_adjacency_list(edges):
     
     # 엣지를 추가합니다.
     for u, v, w in edges:
-        adjacency_list[u].append((v, w))
-        if u == v : 
+        if adjacency_list[u] in (v, w):
             continue
         else:
-            adjacency_list[v].append((u, w))
+            adjacency_list[u].append((v, w))
+            if u == v : 
+                continue
+            else:
+                adjacency_list[v].append((u, w))
     
     return adjacency_list
 
 def dijkstra(graph, start, target):
-    # 노드 개수
-    # n = len(graph)
-
-    
     # 최단 거리 테이블 무한으로 초기화
     distances = [float('inf')] *city_number
     distances[start] = 0
@@ -85,9 +84,10 @@ def calculate(graph):
     sales = [] #얘를 힙으로
     
     for key in packages:
-        pid = packages[key][0]
-        rev = packages[key][1]
-        d = packages[key][2]
+        # pid = packages[key][0]
+        # rev = packages[key][1]
+        # d = packages[key][2]
+        pid, rev, d = packages[key]
         cost = dijkstra(graph, now_s, d)
         if cost == float('inf'):
             heapq.heappush(sales, [101, pid])
