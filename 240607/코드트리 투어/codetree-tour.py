@@ -4,8 +4,7 @@ from collections import deque
 n = int(input())
 cities = []
 packages = {} #얘는 딕셔너리
-
-
+city_number = 0
 now_s = 0
 
 def create(arr):
@@ -44,10 +43,11 @@ def build_adjacency_list(edges):
 
 def dijkstra(graph, start, target):
     # 노드 개수
-    n = len(graph)
+    # n = len(graph)
+
     
     # 최단 거리 테이블 무한으로 초기화
-    distances = [float('inf')] * n
+    distances = [float('inf')] *city_number
     distances[start] = 0
 
     # 우선순위 큐
@@ -66,6 +66,7 @@ def dijkstra(graph, start, target):
         
         # 인접한 노드들에 대해 거리 계산
         for neighbor, weight in graph[current_node]:
+            # print("now neighbor:", neighbor)
             distance = current_distance + weight
             # 더 짧은 경로를 발견한 경우
             if distance < distances[neighbor]:
@@ -104,7 +105,6 @@ def change_start(s):
 
 for i in range(n):
     temp = list(map(int, input().split(" ")))
-    city_number = 0
     if temp[0] == 100:
         arr = temp[1:]
         city_number = arr[0]
