@@ -35,7 +35,10 @@ def build_adjacency_list(edges):
     # 엣지를 추가합니다.
     for u, v, w in edges:
         adjacency_list[u].append((v, w))
-        adjacency_list[v].append((u, w))
+        if u == v : 
+            continue
+        else:
+            adjacency_list[v].append((u, w))
     
     return adjacency_list
 
@@ -64,7 +67,6 @@ def dijkstra(graph, start, target):
         # 인접한 노드들에 대해 거리 계산
         for neighbor, weight in graph[current_node]:
             distance = current_distance + weight
-            
             # 더 짧은 경로를 발견한 경우
             if distance < distances[neighbor]:
                 distances[neighbor] = distance
@@ -107,12 +109,13 @@ for i in range(n):
         arr = temp[1:]
         city_number = arr[0]
         create(arr)
+        graph = build_adjacency_list(cities)
+        # print(graph, len(graph))
     elif temp[0] == 200:
         package(temp[1], temp[2], temp[3])
     elif temp[0] == 300:
         delete(temp[1])
     elif temp[0] == 400:
-        graph = build_adjacency_list(cities)
         # print(graph)
         benefit, pid = calculate(graph)
         if benefit > 0:
