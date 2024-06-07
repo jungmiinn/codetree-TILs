@@ -22,18 +22,20 @@ def delete(cid):
     if cid in packages:
         del packages[cid]
 
-def build_adjacency_list(edges):
+def build_adjacency_list(arr):
     # 모든 노드에 대해 빈 리스트를 초기화합니다.
     adjacency_list = {}
-    for u, v, w in edges:
+
+    for i in range(1, arr[0]*3, 3):
+        u, v, w = arr[i], arr[i+1], arr[i+2]
+        # print(u, v, w)
         if u not in adjacency_list:
             adjacency_list[u] = []
+
         if v not in adjacency_list:
             adjacency_list[v] = []
     
-    # 엣지를 추가합니다.
-    for u, v, w in edges:
-        if adjacency_list[u] in (v, w):
+        if adjacency_list[u] == (v, w):
             continue
         else:
             adjacency_list[u].append((v, w))
@@ -45,8 +47,9 @@ def build_adjacency_list(edges):
     return adjacency_list
 
 def dijkstra(graph, start, target):
-    # 최단 거리 테이블 무한으로 초기화
-    distances = [float('inf')] *city_number
+    # 최단 거리 테이블 무한으로 초기화\
+    # print("city number:", city_number)
+    distances = [float('inf')] * city_number
     distances[start] = 0
 
     # 우선순위 큐
@@ -100,20 +103,23 @@ def change_start(s):
     global now_s
     now_s = s
 
+def put_cn(n):
+    global city_number
+    city_number = n
+
 for i in range(n):
     temp = list(map(int, input().split(" ")))
     if temp[0] == 100:
-        arr = temp[1:]
-        city_number = arr[0]
-        create(arr)
-        graph = build_adjacency_list(cities)
+        arr = temp[2:]
+        put_cn(temp[1])
+        graph = build_adjacency_list(arr)
+        # print(graph)
         
     elif temp[0] == 200:
         package(temp[1], temp[2], temp[3])
     elif temp[0] == 300:
         delete(temp[1])
     elif temp[0] == 400:
-        # print(graph)
         benefit, pid = calculate(graph)
         if benefit > 0:
             print(-1)
