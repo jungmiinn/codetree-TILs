@@ -25,10 +25,10 @@ def delete(cid):
 def build_adjacency_list(arr):
     # 모든 노드에 대해 빈 리스트를 초기화합니다.
     adjacency_list = {}
-
-    for i in range(1, arr[0]*3, 3):
+    # print("vertex 배열 길이:", arr[0]*3)
+    for i in range(1, len(arr[1:]), 3):
+        # print(i, arr[i], arr[i+1], arr[i+2])
         u, v, w = arr[i], arr[i+1], arr[i+2]
-        # print(u, v, w)
         if u not in adjacency_list:
             adjacency_list[u] = []
 
