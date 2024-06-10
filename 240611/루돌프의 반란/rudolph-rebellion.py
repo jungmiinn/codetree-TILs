@@ -116,7 +116,7 @@ def crushingStoR(p1, p2, n, d, t):
         d = 2
 
     if np1 >= N or np1 < 0 or np2 >= N or np2 < 0: # 밀려난 산타가 아웃되는 경우
-        game[p1][p2] = 0
+        # game[p1][p2] = 0
         out_P.append(n)
         P_arr[n] = [-1, -1]
         return None
