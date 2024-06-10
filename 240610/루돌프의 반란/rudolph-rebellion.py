@@ -74,8 +74,8 @@ def s_moving(t):
                 if dirc[j][0] >= 0 and dirc[j][0] < N and dirc[j][1] >= 0 and dirc[j][1] < N:  # 범위안에 있는 좌표
                     if game[dirc[j][0]][dirc[j][1]] == 31: # 1칸 이내에 루돌프가 있음   
                         # print("한칸 이내에 루돌프가 있음")
-                        crushingStoR(dirc[j][0], dirc[j][1], i, j, t) #루돌프랑 박치기 !!!!
                         game[s1][s2] = 0
+                        crushingStoR(dirc[j][0], dirc[j][1], i, j, t) #루돌프랑 박치기 !!!!
                         crushed = 1
                         
             if crushed == 0:
