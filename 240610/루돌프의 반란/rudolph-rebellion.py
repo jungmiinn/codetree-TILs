@@ -24,6 +24,7 @@ for _ in range(P):
     game[ip[1]-1][ip[2]-1] = ip[0] # game 판에 산타 번호로 저장
     P_number.append(ip[0])
     
+P_number.sort()
 
 def r_moving(t, r1, r2):
     dis = []
@@ -48,7 +49,7 @@ def r_moving(t, r1, r2):
                 mi = ((s1-d[0])**2) + ((s2-d[1])**2)
                 nr1, nr2 = d[0], d[1]
                 nd = di
-            di += 1
+        di += 1
 
     game[r1][r2] = 0
     game[nr1][nr2] = 31 # 게임상 좌표에 루돌프 옮겨주기
@@ -185,11 +186,11 @@ for i in range(M):
         break
 
     # print()
-    r_moving(i, rx, ry)
-    # print("루돌프 이동후")
     # for a in game:
     #     print(a)
 
+    r_moving(i, rx, ry)
+    # print("루돌프 이동후")
     s_moving(i)
     
     for x in P_number:
