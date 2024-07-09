@@ -12,6 +12,7 @@ def checking(arr):
         else:
             max_cnt = max(max_cnt, cnt)
             cnt = 1
+    max_cnt = max(max_cnt, cnt)
     return max_cnt
 
 
