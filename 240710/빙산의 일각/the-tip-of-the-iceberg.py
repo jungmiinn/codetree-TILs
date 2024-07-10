@@ -15,10 +15,10 @@ def counting(arr):
 
 
 save = []
+newIce = Ice[:]
 for i in range(1, maxH+1):
-    newIce = Ice[:]
     for j in range(N):
-        newIce[j] -= i
+        newIce[j] -= 1
     save.append(counting(newIce))
 
 print(max(save))
