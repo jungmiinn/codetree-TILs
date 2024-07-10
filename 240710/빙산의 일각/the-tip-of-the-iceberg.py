@@ -1,8 +1,6 @@
 N = int(input())
 Ice = [int(input()) for _ in range(N)]
 
-maxH = max(Ice)
-
 def counting(arr):
     cnt = 0
     for i in range(N-1):
@@ -13,12 +11,18 @@ def counting(arr):
         cnt += 1
     return cnt
 
-
-save = []
+# 초기 섬의 개수 계산
 newIce = Ice[:]
-for i in range(1, maxH+1):
+current_islands = counting(newIce)
+max_islands = current_islands
+
+# 모든 얼음의 높이를 한 번에 1씩 감소시키며 섬의 개수를 계산
+for i in range(1, max(Ice) + 1):
     for j in range(N):
         newIce[j] -= 1
-    save.append(counting(newIce))
 
-print(max(save))
+    # 각 높이에서 섬의 개수 업데이트
+    current_islands = counting(newIce)
+    max_islands = max(max_islands, current_islands)
+
+print(max_islands)
