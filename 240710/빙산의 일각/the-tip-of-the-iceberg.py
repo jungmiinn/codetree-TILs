@@ -26,42 +26,41 @@
 #     max_islands = max(max_islands, current_islands)
 
 # print(max_islands)
-
 N = int(input())
 Ice = [int(input()) for _ in range(N)]
 
-# 각 높이에 대해 시작과 끝을 저장할 리스트
+# 이벤트를 저장할 리스트 (높이, 인덱스)
 events = []
 
-# 각 위치의 높이에 대해 시작과 끝 이벤트 추가
+# 각 높이에 대해 이벤트 추가
 for i in range(N):
     height = Ice[i]
-    events.append((height, i, 1))  # 높이, 인덱스, 시작 이벤트
-    events.append((0, i, -1))      # 높이가 0이 되는 시점, 인덱스, 끝 이벤트
+    events.append((height, i))
 
-# 이벤트를 높이 기준으로 정렬
+# 이벤트를 높이 기준으로 내림차순 정렬
 events.sort(reverse=True)
 
-max_islands = 0
+# 현재 활성 상태를 저장하는 배열
+active = [False] * N
 current_islands = 0
-active = [0] * N  # 현재 활성 상태를 저장하는 배열
+max_islands = 0
 
-# 이벤트를 처리
-for height, index, typ in events:
-    if typ == 1:  # 시작 이벤트
-        active[index] = 1
-        if (index == 0 or active[index - 1] == 0) and (index == N - 1 or active[index + 1] == 0):
-            current_islands += 1
-        if (index > 0 and active[index - 1] == 1) and (index < N - 1 and active[index + 1] == 1):
-            current_islands -= 1
-    else:  # 끝 이벤트
-        if active[index] == 1:
-            active[index] = 0
-            if (index == 0 or active[index - 1] == 0) and (index == N - 1 or active[index + 1] == 0):
-                current_islands -= 1
-            if (index > 0 and active[index - 1] == 1) and (index < N - 1 and active[index + 1] == 1):
-                current_islands += 1
+# 이벤트를 처리하면서 섬의 개수를 계산
+for height, index in events:
+    if active[index]:  # 이미 활성화된 경우 패스
+        continue
 
+    # 현재 얼음을 활성화
+    active[index] = True
+    
+    # 새로운 섬인지 확인
+    if (index == 0 or not active[index - 1]) and (index == N - 1 or not active[index + 1]):
+        current_islands += 1
+    # 기존 섬과 합쳐지는 경우 확인
+    if (index > 0 and active[index - 1]) and (index < N - 1 and active[index + 1]):
+        current_islands -= 1
+    
+    # 최대 섬 개수 업데이트
     max_islands = max(max_islands, current_islands)
 
 print(max_islands)
